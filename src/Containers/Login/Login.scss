@@ -1,0 +1,67 @@
+.body {
+    width: 100%;
+    height: 47em;
+    background-attachment:fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-image: url(../../Img/ingredientes.jpg);
+    
+    #Logintitle {
+      color: $color4;
+      text-align: center;
+    }
+  
+    .FormCard {
+      background-color: rgba(246, 246, 246, 0.822);
+      display: flex;
+      position:relative;
+      width: 20em;
+      height: 30em;
+      border-radius: 0.6em;
+      left: 40vw;
+      top: 10em;
+      // border: 0.2em solid rgb(170, 165, 165) !important ;
+      .BtnLogin1 {
+        display: flex;
+        position: relative;
+        background-color: $color4;
+        border: none;
+        left: 1em;
+      }
+      .AlingForm{
+        border: 0.5em solid transparent ;
+      }
+  
+    }
+    .errorIconP{
+      display: flex;
+      position: relative;
+      width: 1em;
+      top: -1.5em;
+      left: 17.5em;
+      color:red;
+    }
+    .errorIcon{
+      display: flex;
+      position: relative;
+      width: 1em;
+      top: -1.5em;
+      left: 17.5em;
+      color:red;
+    }
+    .error{
+      color: red;
+    }
+  
+    @media screen and(max-width: 600px) {
+      .FormCard {
+        position: absolute;
+  
+        left: 7vw;
+      }
+    }
+    
+  
+  }
+  
