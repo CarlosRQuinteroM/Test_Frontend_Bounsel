@@ -1,12 +1,23 @@
-import React from "react"
+import React from "react";
+import { connect } from "react-redux";
+import SearchName from "../../Components/SearchName/SearchName";
 
-const Home = () => {
-
+const Home = (props) => {
+  if (props.credentials.data?.token) {
     return (
-        <div>
-            Home
-        </div>
-    )
-}
+      <div className="body">
+        <SearchName/>
+      </div>
+    );
+  } else {
+    return (
+      <div className="body">
+        <h1> Debes Iniciar sección para disfrutar de nuestro servicio </h1>
+      </div>
+    );
+  }
+};
 
-export default Home
+export default connect((state) => ({
+  credentials: state.credentials,
+}))(Home);
