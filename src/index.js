@@ -8,6 +8,11 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import store from './Redux/store';
 
+window.addEventListener("beforeunload", (ev) => 
+{  
+    ev.preventDefault();
+    return ev.returnValue = 'Are you sure you want to close?';
+});
 
 ReactDOM.render(
   <React.StrictMode>

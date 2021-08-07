@@ -1,0 +1,18 @@
+.BodySearch {
+  width: 100%;
+  height: auto;
+}
+
+.mapTime {
+  width: 25rem;
+  display: inline-block;
+  position: relative;
+  top: 12em !important;
+  left: 5em;
+}
+
+@media screen and (min-width: 540px) {
+  .map {
+    top: 50em !important;
+  }
+}
