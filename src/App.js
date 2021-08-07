@@ -1,22 +1,33 @@
-import {BrowserRouter, Route , Switch} from 'react-router-dom'
-import './App.scss';
-import Home from './Containers/Home/Home';
-import SearchTime from './Containers/SearchTime/SearchTime';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "./App.scss";
+import Header from "./Components/Header/Header";
+import Home from "./Containers/Home/Home";
+import Login from "./Containers/Login/Login";
+import SearchTime from "./Containers/SearchTime/SearchTime";
+import moment from "moment";
 
-function App() {
+const App = () => {
+  const [startTime, setStartTime] = useState("");
+
+  useEffect(() => {
+    const startTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    setStartTime(startTime);
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter>
-      <Switch>
+        <Header startTime={startTime} />
 
-        <Route path="/" exact component={Home}/>
-        <Route path='/timereport' exact component={SearchTime}/>
-      </Switch>
-      
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/timereport" exact component={SearchTime} />
+          <Route path="/login" exact component={Login} />
+        </Switch>
       </BrowserRouter>
-  
     </div>
   );
-}
+};
 
 export default App;

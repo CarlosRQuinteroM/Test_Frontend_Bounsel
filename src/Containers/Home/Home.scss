@@ -1,0 +1,17 @@
+.body {
+  display: flex;
+  position: absolute;
+  background-color: $backGColor;
+  width: auto;
+  min-height: 70vw;
+  align-content: center;
+
+  .container {
+    display: flex;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+    top: 10em;
+    color: $color2;
+  }
+}
