@@ -5,26 +5,38 @@ import { connect } from "react-redux";
 
 const SearchName = (props) => {
 
-    const [ searchId, setSearchId] = useState('');
-
-
+  const [ searchId, setSearchId] = useState('');
   const [TimeUsers, setTimeUsers] = useState([]);
+  const [filteredDates, setFilteredDates] = useState([]);
+
+  useEffect(() => {
+    filterDates()
+  }, [TimeUsers])
 
   const updateId = (e) => {
       setSearchId(e.target.value);
   };
 
-  useEffect(() => {
-  }, []);
+  // accept start and end as arguments. 
+  const filterDates = () => {
+    const start = new Date('2021-07-04')
+    const end = new Date('2021-08-07')
+  
+    const filtedDates = TimeUsers?.filter(date => {
+     let dateOnly = new Date(date.start_date.substring(0, 10))
+     return (dateOnly >= start && dateOnly <= end)
+    })
+    setFilteredDates([...filtedDates])
+    console.log('THESE DATES ARE FILTERED IN STATE ', filteredDates)
+  }
 
   const SearchDate = async (e) => {
       e.preventDefault();
 
     let id = searchId;
-    console.log('THIS IS THE VALUE OF ID ', searchId)
     try {
       await axios.get(`http://[::1]:3002/time-reports/findone/${id}`)
-      .then(res => setTimeUsers([...res.data]))
+        .then(res => { setTimeUsers([...res.data])} )
     } catch (error) {
       console.log(error);
     }
@@ -82,12 +94,10 @@ const SearchName = (props) => {
         </Form>
       </div>
     </div>
-    <h1>HEY THIS WORKS {TimeUsers?.length}</h1>
-    {TimeUsers?.map(timeuser => {
-        return (
-            <p>{timeuser.start_date} - {timeuser.end_date} ACTIVE TIME: {timeuser.total_time}</p>
-        )
-    })}
+    <h1>Active Sessions:</h1>
+    {filteredDates?.map(date => (
+      <p key={date.id}>{date.start_date} - {date.end_date}</p>
+    ))}
     </div>
   );
 };
