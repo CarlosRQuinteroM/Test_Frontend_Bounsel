@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -8,6 +9,14 @@ const SearchName = (props) => {
   const [ searchId, setSearchId] = useState('');
   const [TimeUsers, setTimeUsers] = useState([]);
   const [filteredDates, setFilteredDates] = useState([]);
+  const [ dates , SetDates]= useState({
+    startDate:"",
+    endDate:""
+  })
+
+  const updatedates = (e) => {
+    SetDates({ ...dates, [e.target.name]: e.target.value });
+  };
 
   useEffect(() => {
     filterDates()
@@ -19,8 +28,10 @@ const SearchName = (props) => {
 
   // accept start and end as arguments. 
   const filterDates = () => {
-    const start = new Date('2021-07-04')
-    const end = new Date('2021-08-07')
+    const startD = moment(dates.startDate).format("YYYY-MM-DD");
+    const start = new Date(startD)
+    const endD = moment(dates.endDate).format("YYYY-MM-DD");
+    const end = new Date(endD)
   
     const filtedDates = TimeUsers?.filter(date => {
      let dateOnly = new Date(date.start_date.substring(0, 10))
@@ -67,6 +78,7 @@ const SearchName = (props) => {
             <Form.Control
               type="Date"
               name="startDate"
+              onChange={(e) => updatedates(e)}
             />
             <Form.Text className="text-muted">
               Add the start date search
@@ -76,9 +88,8 @@ const SearchName = (props) => {
             <Form.Label>Until</Form.Label>
             <Form.Control
               type="Date"
-              name="startDate"
-              //  onBlur={() => checkLogin("email")}
-              //   onChange={""}
+              name="endDate"
+                onChange={(e) => updatedates(e)}
             />
             <Form.Text className="text-muted">
               Add the End date search
@@ -87,7 +98,6 @@ const SearchName = (props) => {
           <Button
             className="BtnLogin1"
             type="submit"
-            // onClick={() => SearchDate()}
           >
             Search
           </Button>
