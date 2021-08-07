@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
@@ -15,23 +15,42 @@ const Header = (props) => {
   const takeMe = (were) => {
     history.push(were);
   };
+  useEffect(() => {}, [])
+
+const defLogFunc = () => {
+  let catchEndTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+  const token = props.credentials?.data.token;
+  
+  console.log('THE PROPS SENT TO THE HEADER ARE ', props)
+  let body = {
+    start_date: props.startTime,
+    end_date: moment(catchEndTime),
+    total_time:"2021-05-05 10:10:50.452708000"
+};
+  axios
+    .post("http://[::1]:3002/time-reports/create", body, {
+      headers: { Authorization: "Bearer " + token },
+    })
+    .then(console.log("Datos Enviados"))
+    .catch(err => console.error(err));
+}
+
+window.addEventListener('unload', defLogFunc)
 
   const LogOut = async (e) => {
-    e.preventDefault();
 
-    // Take The TIME
+    e.preventDefault()
+
     let catchEndTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-
-    let startDate = moment(props?.TIMEReducer).format("YYYY-MM-DD HH:mm:ss");
     const token = props.credentials?.data.token;
 
     let body = {
-        start_date: moment(startDate),
+        start_date: props.startTime,
         end_date: moment(catchEndTime),
         total_time:"2021-05-05 10:10:50.452708000"
     };
 
-    axios
+     axios
       .post("http://[::1]:3002/time-reports/create", body, {
         headers: { Authorization: "Bearer " + token },
       })
@@ -61,12 +80,12 @@ const Header = (props) => {
           <NavbarCollapse>
             <Nav className="BtnLogin">
               <Nav.Link onClick={() => takeMe("/login")}>
-                <p id="Iniciales">LOGIN</p>
+                <p id="Iniciales">Login</p>
               </Nav.Link>
             </Nav>
             <Nav className="BtnRegister BtnLogin">
               <Nav.Link onClick={() => takeMe("/registro")}>
-                <p id="Iniciales">Sing Up</p>
+                <p id="Iniciales">Sign Up</p>
               </Nav.Link>
             </Nav>
           </NavbarCollapse>

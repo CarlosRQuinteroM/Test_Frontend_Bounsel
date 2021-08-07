@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Card } from "react-bootstrap";
 import { connect } from "react-redux";
 
 const SearchName = (props) => {
@@ -33,11 +33,11 @@ const SearchName = (props) => {
     const endD = moment(dates.endDate).format("YYYY-MM-DD");
     const end = new Date(endD)
   
-    const filtedDates = TimeUsers?.filter(date => {
+    const filtDates = TimeUsers?.filter(date => {
      let dateOnly = new Date(date.start_date.substring(0, 10))
      return (dateOnly >= start && dateOnly <= end)
     })
-    setFilteredDates([...filtedDates])
+    setFilteredDates([...filtDates])
     console.log('THESE DATES ARE FILTERED IN STATE ', filteredDates)
   }
 
@@ -56,58 +56,62 @@ const SearchName = (props) => {
   let name = props.credentials.data?.user.name;
   let lastName = props.credentials.data?.user.lastName;
   return (
-      <div>
-    <div className="FormCard">
-      <div className="AlingForm">
-        <Form onSubmit={(e)=> SearchDate(e)}>
-          <h1 id="Logintitle">{`Hola ${name} ${lastName} puedes buscar! `}</h1>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <br />
+    <div>
+      <div className="FormCard">
+        <div className="AlingForm">
+          <Form onSubmit={(e)=> SearchDate(e)}>
+            <h1 id="Logintitle">{`Hola ${name} ${lastName} puedes buscar! `}</h1>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Add the User Id number</Form.Label>
-              <Form.Control
-                type="number"
-                name="Id"
-                placeholder="Id User"
-                onChange={(e)=>updateId(e)}
-              />
-              <Form.Text className="text-muted"></Form.Text>
-            </Form.Group>
+              <br />
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Add the User Id number</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="Id"
+                  placeholder="Id User"
+                  onChange={(e)=>updateId(e)}
+                />
+                <Form.Text className="text-muted"></Form.Text>
+              </Form.Group>
 
-            <Form.Label>From the date</Form.Label>
-            <Form.Control
-              type="Date"
-              name="startDate"
-              onChange={(e) => updatedates(e)}
-            />
-            <Form.Text className="text-muted">
-              Add the start date search
-            </Form.Text>
-            <br></br>
-            <br></br>
-            <Form.Label>Until</Form.Label>
-            <Form.Control
-              type="Date"
-              name="endDate"
+              <Form.Label>From the date</Form.Label>
+              <Form.Control
+                type="Date"
+                name="startDate"
                 onChange={(e) => updatedates(e)}
-            />
-            <Form.Text className="text-muted">
-              Add the End date search
-            </Form.Text>
-          </Form.Group>
-          <Button
-            className="BtnLogin1"
-            type="submit"
-          >
-            Search
-          </Button>
-        </Form>
+              />
+              <Form.Text className="text-muted">
+                Add the start date search
+              </Form.Text>
+              <br></br>
+              <br></br>
+              <Form.Label>Until</Form.Label>
+              <Form.Control
+                type="Date"
+                name="endDate"
+                  onChange={(e) => updatedates(e)}
+              />
+              <Form.Text className="text-muted">
+                Add the End date search
+              </Form.Text>
+            </Form.Group>
+            <Button
+              className="BtnLogin1"
+              type="submit"
+            >
+              Search
+            </Button>
+          </Form>
+        </div>
       </div>
-    </div>
-    <h1>Active Sessions:</h1>
-    {filteredDates?.map(date => (
-      <p key={date.id}>{date.start_date} - {date.end_date}</p>
-    ))}
+      <div style={{ width: '100%', margin: 'auto'}}>
+      {filteredDates?.map(date => (
+            <Card key={date.id} style={{ width: '25rem', display: 'inline-block', position: 'relative', top: '15em' }}>
+              <Card.Body>{date.start_date} - {date.end_date}</Card.Body>
+            </Card>
+      ))}
+      </div>
+
     </div>
   );
 };
