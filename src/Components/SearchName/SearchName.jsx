@@ -5,49 +5,51 @@ import { Button, Form, Card } from "react-bootstrap";
 import { connect } from "react-redux";
 
 const SearchName = (props) => {
-
-  const [ searchId, setSearchId] = useState('');
+  const [searchId, setSearchId] = useState("");
   const [TimeUsers, setTimeUsers] = useState([]);
   const [filteredDates, setFilteredDates] = useState([]);
-  const [ dates , SetDates]= useState({
-    startDate:"",
-    endDate:""
-  })
+  const [dates, SetDates] = useState({
+    startDate: "",
+    endDate: "",
+  });
 
   const updatedates = (e) => {
     SetDates({ ...dates, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    filterDates()
-  }, [TimeUsers])
+    filterDates();
+  }, [TimeUsers]);
 
   const updateId = (e) => {
-      setSearchId(e.target.value);
+    setSearchId(e.target.value);
   };
 
-  // accept start and end as arguments. 
+  // accept start and end as arguments.
   const filterDates = () => {
     const startD = moment(dates.startDate).format("YYYY-MM-DD");
-    const start = new Date(startD)
+    const start = new Date(startD);
     const endD = moment(dates.endDate).format("YYYY-MM-DD");
-    const end = new Date(endD)
-  
-    const filtDates = TimeUsers?.filter(date => {
-     let dateOnly = new Date(date.start_date.substring(0, 10))
-     return (dateOnly >= start && dateOnly <= end)
-    })
-    setFilteredDates([...filtDates])
-    console.log('THESE DATES ARE FILTERED IN STATE ', filteredDates)
-  }
+    const end = new Date(endD);
+
+    const filtDates = TimeUsers?.filter((date) => {
+      let dateOnly = new Date(date.start_date.substring(0, 10));
+      return dateOnly >= start && dateOnly <= end;
+    });
+    setFilteredDates([...filtDates]);
+
+  };
 
   const SearchDate = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
     let id = searchId;
     try {
-      await axios.get(`http://[::1]:3002/time-reports/findone/${id}`)
-        .then(res => { setTimeUsers([...res.data])} )
+      await axios
+        .get(`http://[::1]:3002/time-reports/findone/${id}`)
+        .then((res) => {
+          setTimeUsers([...res.data]);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -56,10 +58,10 @@ const SearchName = (props) => {
   let name = props.credentials.data?.user.name;
   let lastName = props.credentials.data?.user.lastName;
   return (
-    <div>
+    <div className="BodySearch">
       <div className="FormCard">
         <div className="AlingForm">
-          <Form onSubmit={(e)=> SearchDate(e)}>
+          <Form onSubmit={(e) => SearchDate(e)}>
             <h1 id="Logintitle">{`Hola ${name} ${lastName} puedes buscar! `}</h1>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <br />
@@ -69,7 +71,7 @@ const SearchName = (props) => {
                   type="number"
                   name="Id"
                   placeholder="Id User"
-                  onChange={(e)=>updateId(e)}
+                  onChange={(e) => updateId(e)}
                 />
                 <Form.Text className="text-muted"></Form.Text>
               </Form.Group>
@@ -89,29 +91,27 @@ const SearchName = (props) => {
               <Form.Control
                 type="Date"
                 name="endDate"
-                  onChange={(e) => updatedates(e)}
+                onChange={(e) => updatedates(e)}
               />
               <Form.Text className="text-muted">
                 Add the End date search
               </Form.Text>
             </Form.Group>
-            <Button
-              className="BtnLogin1"
-              type="submit"
-            >
+            <Button className="BtnLogin1" type="submit">
               Search
             </Button>
           </Form>
         </div>
       </div>
-      <div style={{ width: '100%', margin: 'auto'}}>
-      {filteredDates?.map(date => (
-            <Card key={date.id} style={{ width: '25rem', display: 'inline-block', position: 'relative', top: '15em' }}>
-              <Card.Body>{date.start_date} - {date.end_date}</Card.Body>
-            </Card>
-      ))}
+      <div style={{ width: "100%", margin: "auto" }}>
+        {filteredDates?.map((date) => (
+          <Card key={date.id} className="mapTime">
+            <Card.Body className="map">
+              {date.start_date} - {date.end_date}
+            </Card.Body>
+          </Card>
+        ))}
       </div>
-
     </div>
   );
 };

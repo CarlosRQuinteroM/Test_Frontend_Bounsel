@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SearchTime = () => {
-    return (
-        <div>
-            Search Time Report
-        </div>
-    )
-}
+  return <div>Search Time Report</div>;
+};
 
-export default SearchTime
+export default SearchTime;

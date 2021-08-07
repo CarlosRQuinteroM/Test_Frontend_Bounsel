@@ -1,12 +1,10 @@
-import {combineReducers} from 'redux';
-import credentials from './credential-reducer';
-import TIMEReducer from './dateLogin-reducer';
-
-
+import { combineReducers } from "redux";
+import credentials from "./credential-reducer";
+import TIMEReducer from "./dateLogin-reducer";
 
 const rootReducer = combineReducers({
-    credentials,
-    TIMEReducer
+  credentials,
+  TIMEReducer,
 });
 
 export default rootReducer;

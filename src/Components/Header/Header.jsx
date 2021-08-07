@@ -15,47 +15,45 @@ const Header = (props) => {
   const takeMe = (were) => {
     history.push(were);
   };
-  useEffect(() => {}, [])
+  useEffect(() => {}, []);
 
-const defLogFunc = () => {
-  let catchEndTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-  const token = props.credentials?.data.token;
-  
-  console.log('THE PROPS SENT TO THE HEADER ARE ', props)
-  let body = {
-    start_date: props.startTime,
-    end_date: moment(catchEndTime),
-    total_time:"2021-05-05 10:10:50.452708000"
-};
-  axios
-    .post("http://[::1]:3002/time-reports/create", body, {
-      headers: { Authorization: "Bearer " + token },
-    })
-    .then(console.log("Datos Enviados"))
-    .catch(err => console.error(err));
-}
+  const defLogFunc = () => {
+    let catchEndTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    const token = props.credentials?.data.token;
 
-window.addEventListener('unload', defLogFunc)
+    let body = {
+      start_date: props.startTime,
+      end_date: moment(catchEndTime),
+      total_time: "2021-05-05 10:10:50.452708000",
+    };
+    axios
+      .post("http://[::1]:3002/time-reports/create", body, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then()
+      .catch((err) => console.error(err));
+  };
+
+  window.addEventListener("unload", defLogFunc);
 
   const LogOut = async (e) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     let catchEndTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
     const token = props.credentials?.data.token;
 
     let body = {
-        start_date: props.startTime,
-        end_date: moment(catchEndTime),
-        total_time:"2021-05-05 10:10:50.452708000"
+      start_date: props.startTime,
+      end_date: moment(catchEndTime),
+      total_time: "2021-05-05 10:10:50.452708000",
     };
 
-     axios
+    axios
       .post("http://[::1]:3002/time-reports/create", body, {
         headers: { Authorization: "Bearer " + token },
       })
-      .then(console.log("Datos Enviados"))
-      .catch(err => console.error(err));
+      .then()
+      .catch((err) => console.error(err));
 
     props.dispatch({ type: ENDTIME });
 
