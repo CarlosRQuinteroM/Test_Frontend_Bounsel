@@ -3,8 +3,11 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import { LOGIN } from "../../Redux/type";
+import { STARTIME } from "../../Redux/type";
+
 import { Form, Button } from "react-bootstrap";
 import { BiErrorAlt } from "react-icons/bi";
+import moment from 'moment'
 
 require("dotenv").config();
 
@@ -18,6 +21,8 @@ const Login = (props) => {
   const PassWordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const [ startTime , setStartTime] = useState('');
 
   const [msgError, setMensajeError] = useState("");
 
@@ -33,7 +38,21 @@ const Login = (props) => {
 
   useEffect(() => {}, []);
 
-  const logeame = async () => {
+
+ 
+  const logeame = async (e) => {
+    e.preventDefault()
+
+    const startLogin = moment().format('L LTS');
+    setStartTime(startLogin);
+    
+    setTimeout(() => {
+      props.dispatch({ type: STARTIME, payload: startTime});
+    }, 500);
+    
+   
+
+
     let body = {
       email: credentials.email,
       password: credentials.password,
@@ -50,6 +69,7 @@ const Login = (props) => {
   };
   const handleResponse = (res) => {
     props.dispatch({ type: LOGIN, payload: res.data });
+    
   };
 
   const checkLogin = (arg) => {
@@ -82,8 +102,9 @@ const Login = (props) => {
     }
   };
 
-  if (!props.credentials.data?.token) {
+  // if (!props.credentials.data?.token) {
     return (
+    
       <div className="body">
         <div className="FormCard">
           <div className="AlingForm">
@@ -130,7 +151,7 @@ const Login = (props) => {
               <Button
                 className="BtnLogin1"
                 type="submit"
-                onClick={() => logeame()}
+                onClick={(e) => logeame(e)}
               >
                 Login
               </Button>
@@ -141,13 +162,13 @@ const Login = (props) => {
         </div>
       </div>
     );
-  } else {
-   return(
-     <div className="hola">
-       {history.push('/')}
-     </div>
-   )
-  }
+  // } else {
+  //  return(
+  //    <div className="hola">
+
+  //    </div>
+  //  )
+  // }
 };
 
 export default connect((state) => ({
