@@ -3,13 +3,16 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import { LOGIN } from "../../Redux/type";
+import { STARTIME } from "../../Redux/type";
+
 import { Form, Button } from "react-bootstrap";
 import { BiErrorAlt } from "react-icons/bi";
+import moment from "moment";
 
 require("dotenv").config();
 
 const Login = (props) => {
-  // console.log(props.credentials)
+
 
   let history = useHistory();
 
@@ -18,6 +21,8 @@ const Login = (props) => {
   const PassWordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const [startTime, setStartTime] = useState("");
 
   const [msgError, setMensajeError] = useState("");
 
@@ -33,7 +38,12 @@ const Login = (props) => {
 
   useEffect(() => {}, []);
 
-  const logeame = async () => {
+  const logeame = async (e) => {
+    e.preventDefault();
+
+    const startLogin = moment().format("YYYY-MM-DD HH:mm:ss");
+    setStartTime(startLogin);
+
     let body = {
       email: credentials.email,
       password: credentials.password,
@@ -49,7 +59,11 @@ const Login = (props) => {
       });
   };
   const handleResponse = (res) => {
-    props.dispatch({ type: LOGIN, payload: res.data });
+    props.dispatch({ type: STARTIME, payload: startTime });
+
+    setTimeout(() => {
+      props.dispatch({ type: LOGIN, payload: res.data });
+    }, 100);
   };
 
   const checkLogin = (arg) => {
@@ -83,68 +97,68 @@ const Login = (props) => {
   };
 
   if (!props.credentials.data?.token) {
-    return (
-      <div className="body">
-        <div className="FormCard">
-          <div className="AlingForm">
-            <Form>
-              <h1 id="Logintitle">login</h1>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  placeholder="Enter email"
-                  onBlur={() => checkLogin("email")}
-                  onChange={updateCredentials}
-                />
-                <div className="errorIcon">{errorLogin?.eIconEmail}</div>
-                <div className="error">{errorLogin.eEmail}</div>
+  return (
+    <div className="body">
+      <div className="FormCard">
+        <div className="AlingForm">
+          <Form>
+            <h1 id="Logintitle">login</h1>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="Enter email"
+                onBlur={() => checkLogin("email")}
+                onChange={updateCredentials}
+              />
+              <div className="errorIcon">{errorLogin?.eIconEmail}</div>
+              <div className="error">{errorLogin.eEmail}</div>
 
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
 
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  onBlur={() => checkLogin("password")}
-                  onChange={updateCredentials}
-                  lenght="30"
-                />
-                <div className="errorIconP">{errorLogin.eIconPassword}</div>
-                <div className="error">{errorLogin.ePassword}</div>
-              </Form.Group>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                onBlur={() => checkLogin("password")}
+                onChange={updateCredentials}
+                lenght="30"
+              />
+              <div className="errorIconP">{errorLogin.eIconPassword}</div>
+              <div className="error">{errorLogin.ePassword}</div>
+            </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check
-                  type="checkbox"
-                  label="I agree with the terms and conditions"
-                />
-              </Form.Group>
-              <Button
-                className="BtnLogin1"
-                type="submit"
-                onClick={() => logeame()}
-              >
-                Login
-              </Button>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check
+                type="checkbox"
+                label="I agree with the terms and conditions"
+              />
+            </Form.Group>
+            <Button
+              className="BtnLogin1"
+              type="submit"
+              onClick={(e) => logeame(e)}
+            >
+              Login
+            </Button>
 
-              <div className="error">{msgError}</div>
-            </Form>
-          </div>
+            <div className="error">{msgError}</div>
+          </Form>
         </div>
       </div>
-    );
+    </div>
+  );
   } else {
    return(
      <div className="hola">
-       {history.push('/')}
+      {history.push("/")}
      </div>
    )
   }
@@ -152,4 +166,5 @@ const Login = (props) => {
 
 export default connect((state) => ({
   credentials: state.credentials,
+  TIMERreducer: state.TIMERreducer,
 }))(Login);
